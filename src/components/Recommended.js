@@ -1,38 +1,50 @@
-import { useQuery } from '@apollo/client'
+import { useQuery, useLazyQuery } from '@apollo/client'
 import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { ME } from '../graphql/queries'
-
+import { BOOKS_BY_GENRE } from '../graphql/queries'
 
 const Books = (props) => {
   const [filterST, setFilterST] = useState('')
   const [filteredBookList, setFilteredBookList] = useState([])
   const books = props?.booksResult?.data?.allBooks
 
+  const [getBooksByGenre, result] = useLazyQuery(BOOKS_BY_GENRE)
+
+  useEffect(() => {
+    if (!filterST || !books || books.length < 1) return;
+    getBooksByGenre({ variables: { genre: filterST } })
+  }, [filterST, books, getBooksByGenre])
+
+  useEffect(() => {
+    if (result.data) {
+      setFilteredBookList(result.data.allBooks)
+    }
+  }, [result.data])
+
   const author = useQuery(ME)
-  console.log('author', author?.data?.me.favoriteGenre)
 
   useEffect(() => {
     const filter = author?.data?.me.favoriteGenre
     setFilterST(filter)
   }, [author])
 
-  useEffect(() => {
-    console.log('useeff')
-    setFilteredBookList(books)
-  }, [books])
+  // useEffect(() => {
+  //   console.log('useeff')
+  //   setFilteredBookList(books)
+  // }, [books])
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (!filterST || !books || books.length < 1) return;
+  //   if (!filterST || !books || books.length < 1) return;
 
-    const filteredBooksByGenre = books.filter(e => {
-      return e.genres.includes(filterST)
-    })
-    setFilteredBookList(filteredBooksByGenre)
-  }, [filterST, books])
+  //   const filteredBooksByGenre = books.filter(e => {
+  //     return e.genres.includes(filterST)
+  //   })
+  //   setFilteredBookList(filteredBooksByGenre)
+  // }, [filterST, books])
 
 
   if (!props.show) {
@@ -55,20 +67,20 @@ const Books = (props) => {
       <div>No books!</div>
     )
   }
-  console.log(books)
+  // console.log(books)
 
   //ex8.19
-  const filterClickHandler = (filter) => {
-    setFilterST(filter)
-    if (filter === 'all') {
-      setFilteredBookList(books)
-      return
-    }
-    const filteredBooksByGenre = books.filter(e => {
-      return e.genres.includes(filter)
-    })
-    setFilteredBookList(filteredBooksByGenre)
-  }
+  // const filterClickHandler = (filter) => {
+  //   setFilterST(filter)
+  //   if (filter === 'all') {
+  //     setFilteredBookList(books)
+  //     return
+  //   }
+  //   const filteredBooksByGenre = books.filter(e => {
+  //     return e.genres.includes(filter)
+  //   })
+  //   setFilteredBookList(filteredBooksByGenre)
+  // }
 
   return (
     <div>
