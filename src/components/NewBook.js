@@ -15,7 +15,6 @@ const NewBook = (props) => {
     refetchQueries: [{ query: ALL_BOOKS }]
   })
 
-
   if (!props.show) {
     return null
   }
@@ -24,9 +23,6 @@ const NewBook = (props) => {
     event.preventDefault()
 
     createBook({ variables: { title, name: authorName, published: parseInt(published), genres } })
-
-    console.log(parseInt(published))
-
 
     setTitle('')
     setPublished('')

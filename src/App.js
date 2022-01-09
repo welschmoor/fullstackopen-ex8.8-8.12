@@ -5,6 +5,7 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import BirthYearForm from './components/BirthYearForm'
 import LoginForm from './components/LoginForm'
+import Recommended from './components/Recommended'
 
 import { useQuery, useApolloClient } from '@apollo/client'
 
@@ -23,7 +24,7 @@ const App = () => {
   const authorsResult = useQuery(ALL_AUTHORS)
   const booksResult = useQuery(ALL_BOOKS)
   const client = useApolloClient()
-  console.log("booksResult", booksResult)
+
 
   // keep user always logged in as long as there's token inside localstorage
   useEffect(() => {
@@ -42,9 +43,9 @@ const App = () => {
 
   const logout = () => {
 
-    setToken(null)
     localStorage.clear()
     client.resetStore()
+    setToken(null)
   }
 
   return (
@@ -56,6 +57,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         {token && <button onClick={() => setPage('add')}>add book</button>}
+        {token && <button onClick={() => setPage('recommended')}>recommended</button>}
         {token && <button type="button" onClick={logout}>logout</button>}
       </div>
 
@@ -72,6 +74,14 @@ const App = () => {
       {token && <NewBook
         show={page === 'add'}
       />}
+
+      {/* exercise 8.20 */}
+      {token && <Recommended
+        show={page === 'recommended'}
+        booksResult={booksResult}
+        authorsResult={authorsResult}
+      />}
+
       <br />
       <br />
       <br />

@@ -15,8 +15,6 @@ const BirthYearForm = ({ authorsResult }) => {
   })
   const [selectOptions, setSelectOptions] = useState([])
 
-  console.log("result", result)
-  console.log("AR", authorsResult)
 
   const changeYearHandler = e => {
     e.preventDefault()
