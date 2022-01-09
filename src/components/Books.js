@@ -11,7 +11,16 @@ const Books = (props) => {
     )
   }
   // 8.9
-  const books = props.booksResult.data.allBooks
+  const books = props?.booksResult?.data?.allBooks
+  if (!books || books.length <1 ) {
+    return <div>No books</div>
+  }
+
+  if (books?.length < 1) {
+    return (
+      <div>No books!</div>
+    )
+  }
   console.log(books)
   
   return (
@@ -32,7 +41,7 @@ const Books = (props) => {
           {books.map(a =>
             <tr key={a.title}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+              <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
           )}

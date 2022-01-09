@@ -11,7 +11,10 @@ const Authors = (props) => {
   }
 
   // 
-  const authors = props.result.data.allAuthors
+  const authors = props?.result?.data?.allAuthors
+  if (!authors || authors.length < 1) {
+    return <div>No authors to load</div>
+  }
 
   return (
     <div>

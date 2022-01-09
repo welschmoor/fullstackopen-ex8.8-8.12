@@ -28,14 +28,8 @@ const BirthYearForm = ({ authorsResult }) => {
     })
   }
 
-
   useEffect(() => {
-    console.log("useEffect")
-
-
     if (authorsResult.data) {
-      console.log("AA:", authorsResult.data.allAuthors)
-
       const options = authorsResult.data.allAuthors.map(e => {
         return { value: e.name, label: e.name }
       })
